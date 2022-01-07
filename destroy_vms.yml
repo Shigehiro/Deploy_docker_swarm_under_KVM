@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: false
+  become: true
+  tasks:
+  - name: destroy VMs
+    import_role:
+      name: destroy_vms
