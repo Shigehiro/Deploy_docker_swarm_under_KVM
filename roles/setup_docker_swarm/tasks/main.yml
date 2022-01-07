@@ -1,0 +1,3 @@
+---
+- name: set up docker swarm
+  include_tasks: setup_docker_swarm.yml

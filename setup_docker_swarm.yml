@@ -1,0 +1,8 @@
+---
+- hosts: swarm_managers:swarm_workers
+  gather_facts: true
+  become: true
+  tasks:
+  - name: setup docker swarm
+    import_role:
+      name: setup_docker_swarm

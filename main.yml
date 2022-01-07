@@ -1,0 +1,9 @@
+---
+- name: launch instances
+  import_playbook: launch_instances.yml
+
+- name: install packages
+  import_playbook: install_packages.yml
+
+- name: set up docker swarm cluster
+  import_playbook: setup_docker_swarm.yml

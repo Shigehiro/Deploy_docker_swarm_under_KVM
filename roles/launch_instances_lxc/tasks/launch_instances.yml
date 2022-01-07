@@ -1,0 +1,28 @@
+---
+# tasks file for launch_instances_lxc
+- name: check if "{{ instance_name }}" exists
+  shell: lxc list -cn | grep -w "{{ instance_name }}"
+  register: result
+  ignore_errors: yes
+  failed_when: false
+  changed_when: false
+
+- name: configure and launch an instance "{{ instance_name }}"
+  block:
+    - name: init instance "{{ instance_name }}"
+      command: lxc init "{{ image_name }}" --vm "{{ instance_name }}" -p "{{ profile }}"
+      when: is_virtualmachine
+    - name: configure memory size
+      command: lxc config set "{{ instance_name }}" limits.memory "{{ memory }}"
+    - name: configure number of CPU
+      command: lxc config set "{{ instance_name }}" limits.cpu "{{ cpu }}"
+    - name: configure disk_size
+      command: lxc config device override "{{ instance_name }}" root size="{{ disk_size }}"
+    - name: start "{{ instance_name }}"
+      community.general.lxd_container:
+        name: "{{ instance_name }}"
+        state: started
+        type: virtual-machine
+        wait_for_ipv4_addresses: true
+        timeout: 120
+  when: result.rc != 0

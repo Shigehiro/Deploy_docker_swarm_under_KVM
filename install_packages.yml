@@ -1,0 +1,8 @@
+---
+- hosts: instances
+  gather_facts: false
+  become: true
+  tasks:
+  - name: install packages
+    import_role:
+      name: install_packages

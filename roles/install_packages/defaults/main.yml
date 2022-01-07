@@ -1,0 +1,5 @@
+---
+# defaults file for install_docker
+install_packages:
+  - docker
+  - docker-compose  

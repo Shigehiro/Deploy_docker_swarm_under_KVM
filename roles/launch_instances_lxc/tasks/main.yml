@@ -1,0 +1,2 @@
+- name: launch instances
+  include_tasks: launch_instances.yml

@@ -1,0 +1,10 @@
+---
+# defaults file for launch_instances_lxc
+image_name: ubuntu:20.04
+is_virtualmachine: true
+memory: 4096MB
+cpu: 2
+disk_size: 20GiB
+profile: defult
+instance_name: 
+  - instance01

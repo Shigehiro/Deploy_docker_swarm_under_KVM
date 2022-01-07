@@ -1,0 +1,9 @@
+---
+# tasks file for install_docker
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+  loop: "{{ install_packages }}"

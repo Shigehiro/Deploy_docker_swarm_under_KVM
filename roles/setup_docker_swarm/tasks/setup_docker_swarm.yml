@@ -1,0 +1,46 @@
+---
+#- name: dump ansible facts
+#  ansible.builtin.debug:
+#    var: ansible_facts
+
+- name: init swarm
+  community.docker.docker_swarm:
+    state: present
+    advertise_addr: "{{ ansible_facts['default_ipv4']['address'] }}"
+  register: result
+  when: inventory_hostname == groups['swarm_managers'][0]
+
+- name: Get join-token for manager nodes
+  set_fact:
+    join_token_manager: "{{ hostvars[groups['swarm_managers'][0]].result.swarm_facts.JoinTokens.Manager }}"
+
+- name: Get join-token for worker nodes
+  set_fact:
+    join_token_worker: "{{ hostvars[groups['swarm_managers'][0]].result.swarm_facts.JoinTokens.Worker }}"
+
+- name: dump token for manager
+  debug:
+    var: join_token_manager
+
+- name: dump token for worker
+  debug:
+    var: join_token_worker
+
+- name: Join other managers
+  community.general.docker_swarm:
+    state: join
+    join_token: "{{ join_token_manager }}"
+    advertise_addr: "{{ ansible_facts['default_ipv4']['address'] }}"
+    remote_addrs: "{{ hostvars[groups['swarm_managers'][0]].ansible_facts['default_ipv4']['address'] }}"
+  when:
+    - inventory_hostname in groups['swarm_managers']
+    - inventory_hostname != groups['swarm_managers'][0]
+
+- name: Join workers
+  community.general.docker_swarm:
+    state: join
+    join_token: "{{ join_token_worker }}"
+    advertise_addr: "{{ ansible_facts['default_ipv4']['address'] }}"
+    remote_addrs: "{{ hostvars[groups['swarm_managers'][0]].ansible_facts['default_ipv4']['address'] }}"
+  when:
+    - inventory_hostname in groups['swarm_workers']

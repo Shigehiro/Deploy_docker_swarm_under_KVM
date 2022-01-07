@@ -1,0 +1,17 @@
+- hosts: localhost
+  gather_facts: false
+  become: true
+  #vars:
+   # profile: default
+   # cpu: 2
+   # memory: 4096MB
+    #image_name: images:rockylinux/8
+   # image_name: ubuntu:20.04
+  tasks:
+    - name: launch instance "{{ instance_name }}"
+      include_role:
+        name: launch_instances_lxc
+      loop: "{{ instance_name }}"
+      loop_control:
+        loop_var: instance_name
+
