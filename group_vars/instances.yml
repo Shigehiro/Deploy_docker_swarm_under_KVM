@@ -1,10 +1,4 @@
 ---
-profile: default
-cpu: 2
-memory: 4096MB
-#image_name: images:rockylinux/8
-image_name: ubuntu:20.04
-is_virtualmachine: true
 install_packages:
   - docker
   - docker-compose 

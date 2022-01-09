@@ -1,0 +1,10 @@
+---
+instance_name:
+  - docker01
+  - docker02
+profile: default
+cpu: 2
+memory: 4096MB
+image_name: images:rockylinux/8
+is_virtualmachine: true
+#image_name: ubuntu:20.04
