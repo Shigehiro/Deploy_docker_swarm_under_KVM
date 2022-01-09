@@ -1,0 +1,8 @@
+---
+- hosts: localhost
+  gather_facts: false
+  become: true
+  tasks:
+  - name: stop VMs
+    import_role:
+      name: stop_vms

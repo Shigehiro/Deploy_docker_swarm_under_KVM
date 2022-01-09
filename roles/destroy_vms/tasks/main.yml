@@ -1,0 +1,16 @@
+---
+# tasks file for destroy_vms
+- name: Stop VMs
+  community.general.lxd_container:
+    name: "{{ item }}"
+    state: stopped
+    force_stop: true
+    type: virtual-machine
+  with_items: " {{ groups['instances'] }}"
+
+- name: Deleete VMs
+  community.general.lxd_container:
+    name: "{{ item }}"
+    state: absent
+    type: virtual-machine
+  with_items: " {{ groups['instances'] }}"
